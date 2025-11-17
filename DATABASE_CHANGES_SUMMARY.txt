@@ -1,0 +1,145 @@
+================================================================================
+DATABASE TERMINOLOGY CHANGES - SUMMARY FOR REVIEW
+================================================================================
+Date: November 17, 2025
+Prepared for: Content Marketing Team
+
+This document outlines the database changes required to update terminology
+from "Solution Sales Canvas" to "Solution Marketing Canvas" and from
+"Sub Solution" to "Product".
+
+================================================================================
+CHANGE #1: SOLUTION SALES CANVAS → SOLUTION MARKETING CANVAS
+================================================================================
+
+What's changing: All references to "SSC" will be changed to "SMC"
+
+TABLES (8 tables affected):
+  - ssc_main                           → smc_main
+  - ssc_channels                       → smc_channels
+  - ssc_funnel_mapping                 → smc_funnel_mapping
+  - ssc_personas                       → smc_personas
+  - ssc_problem_statements             → smc_problem_statements
+  - ssc_solution_features              → smc_solution_features
+  - ssc_unfair_advantage               → smc_unfair_advantage
+  - ssc_unique_value_proposition       → smc_unique_value_proposition
+
+COLUMN NAMES (12 columns affected):
+  - smc_main.ssc_id                    → smc_id
+  - smc_main.ssc_url                   → smc_url
+  - smc_channels.ssc_id                → smc_id
+  - smc_funnel_mapping.ssc_id          → smc_id
+  - smc_personas.ssc_id                → smc_id
+  - smc_problem_statements.ssc_id      → smc_id
+  - smc_solution_features.ssc_id       → smc_id
+  - smc_unfair_advantage.ssc_id        → smc_id
+  - smc_unique_value_proposition.ssc_id → smc_id
+  - content_asset_builder.ssc_id       → smc_id
+  - content_topic.ssc_id               → smc_id
+  - cta.ssc_id                         → smc_id
+
+RELATIONSHIPS (12 foreign keys affected):
+  All foreign key relationships will be recreated with new SMC naming.
+
+IMPACT:
+  ✓ Data will NOT be lost - only names are changing
+  ✓ All relationships will remain intact
+  ✓ Transaction is wrapped - if anything fails, everything rolls back
+
+================================================================================
+CHANGE #2: SUB SOLUTION → PRODUCT
+================================================================================
+
+What's changing: All references to "Sub Solution" will be changed to "Product"
+
+TABLES (1 table affected):
+  - contentmarketing_sub_solutions_master → contentmarketing_product_master
+
+COLUMN NAMES (4 columns affected):
+  - contentmarketing_product_master.sub_solution_id   → product_id
+  - contentmarketing_product_master.sub_solution_name → product_name
+  - contentmarketing_product_master.sub_solution_code → product_code
+  - smc_main.sub_solution_id                          → product_id
+
+RELATIONSHIPS (1 foreign key affected):
+  The relationship between products and solutions will be recreated.
+
+IMPACT:
+  ✓ Data will NOT be lost - only names are changing
+  ✓ All relationships will remain intact
+  ✓ Transaction is wrapped - if anything fails, everything rolls back
+
+================================================================================
+EXECUTION PLAN
+================================================================================
+
+1. BACKUP DATABASE
+   - Create a full backup of the production database before running scripts
+
+2. RUN MIGRATION SCRIPTS (in order):
+   a) migration_ssc_to_smc.sql
+      - Changes SSC to SMC
+      - Estimated time: 1-2 minutes
+
+   b) migration_subsolution_to_product.sql
+      - Changes Sub Solution to Product
+      - Estimated time: < 1 minute
+
+3. VERIFY CHANGES
+   - Both scripts include verification queries at the end
+   - Check that all old references are gone
+   - Check that all new names are present
+
+================================================================================
+SAFETY FEATURES
+================================================================================
+
+✓ Both scripts are transaction-wrapped
+  → If any step fails, ALL changes are automatically rolled back
+
+✓ Scripts tested on test database (test_ssctosmc)
+  → All changes verified successful
+
+✓ Error handling included
+  → Clear error messages if something goes wrong
+
+✓ No data modification
+  → Only table names, column names, and constraints are changed
+  → Your actual data (rows) remains untouched
+
+================================================================================
+WHAT YOU NEED TO UPDATE AFTER MIGRATION
+================================================================================
+
+After running these scripts, the following items may need updates:
+
+1. APPLICATION CODE
+   - Update any queries referencing old table names (ssc_*, sub_solution_*)
+   - Update column names in INSERT/UPDATE/SELECT statements
+
+2. STORED PROCEDURES / VIEWS (if any)
+   - Check for references to old names
+   - Update as needed
+
+3. API ENDPOINTS / BACKEND CODE
+   - Update model/entity names
+   - Update API responses that reference these terms
+
+4. FRONTEND / UI
+   - Update labels from "Solution Sales Canvas" to "Solution Marketing Canvas"
+   - Update labels from "Sub Solution" to "Product"
+
+5. DOCUMENTATION
+   - Update technical documentation
+   - Update user guides
+
+================================================================================
+QUESTIONS OR CONCERNS?
+================================================================================
+
+Please review this document and confirm before we proceed with the migration.
+
+If you have any questions or concerns, please let me know before we execute
+these changes on the production database.
+
+================================================================================
