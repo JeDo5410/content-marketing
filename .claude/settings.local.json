@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//mnt/c/Program Files/Microsoft SQL Server/160/**)",
+      "Bash(cmd.exe /c where sqlcmd.exe)",
+      "Bash(powershell.exe:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
