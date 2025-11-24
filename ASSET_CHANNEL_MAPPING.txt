@@ -1,0 +1,219 @@
+================================================================================
+ASSET-CHANNEL SPECIFICATION MAPPING
+================================================================================
+Date: November 17, 2025
+
+This document maps the Canva Guide Template Library CSV data to database IDs
+and shows how each specification will be inserted into asset_channel_specification table.
+
+================================================================================
+CHANNEL MAPPING (CSV → Database)
+================================================================================
+
+NEW CHANNELS (need to be added first):
+  - WhatsApp                    → channel_id: TBD (code: WA)
+  - LinkedIn Message            → channel_id: TBD (code: LI_MSG)
+  - HubSpot Email               → channel_id: TBD (code: HS_EMAIL)
+
+EXISTING CHANNELS:
+  - Facebook                    → channel_id: 1  (code: FB)
+  - Instagram                   → channel_id: 2  (code: IG)
+  - LinkedIn (Ads)              → channel_id: 3  (code: LI)
+  - TikTok                      → channel_id: 4  (code: TT)
+  - Google Ads                  → channel_id: 5  (code: GA)
+  - YouTube                     → channel_id: 6  (code: YT)
+
+================================================================================
+ASSET TYPE MAPPING (CSV → Database)
+================================================================================
+
+CSV Asset Type                        → Database ID | Code          | Name
+--------------------------------------------------------------------------------
+Email                                 → 40          | C_EMAIL       | Email
+Solution Brochure                     → 31          | I_BROCHURE    | Solution Brochure
+Solution Landing Page                 → 29          | I_LANDING_PAGE| Solution Landing Page
+Solution Video Script                 → 26          | C_VIDEO_SCRIPT| Solution Video Script
+Solution Video Production             → 44          | C_VIDEO_PROD  | Solution Video Production
+Solution Article                      → 30          | I_ARTICLE     | Solution Article
+Solution Banner Advert                → 25          | C_BANNER      | Solution Banner Advert
+Solution UVP Pitch                    → 27          | C_UVP_PITCH   | Solution UVP Pitch
+Solution Minisite                     → 33          | L_MINISITE    | Solution Minisite
+Solution PPT                          → 34          | L_PPT         | Solution PPT - Lead Generation
+Product Brochure                      → 32          | I_PRODUCT_BROCHURE | Product Brochure
+Podcast                               → 28          | C_PODCAST     | Podcast
+
+================================================================================
+DETAILED SPECIFICATION MAPPINGS
+================================================================================
+
+1. EMAIL - HubSpot (asset_type_id: 40, channel_id: TBD_HS_EMAIL)
+   ├─ headline_word_count_min: 9
+   ├─ headline_word_count_max: 13
+   ├─ subheadline_word_count_min: 27
+   ├─ subheadline_word_count_max: 34
+   ├─ body_word_count_min: 120
+   ├─ body_word_count_max: 140
+   ├─ cta_word_count_min: 3
+   ├─ cta_word_count_max: 5
+   └─ additional_specs: "~80 chars for headline, ~220 chars for sub-headline"
+
+2. EMAIL - WhatsApp (asset_type_id: 40, channel_id: TBD_WA)
+   ├─ headline_word_count_min: 4
+   ├─ headline_word_count_max: 7
+   ├─ subheadline_word_count_min: 6
+   ├─ subheadline_word_count_max: 10
+   ├─ body_word_count_min: 50
+   ├─ body_word_count_max: 80
+   └─ additional_specs: "~30–55 chars for headline, ~45–80 chars for sub-headline, ~350–550 chars for body"
+
+3. EMAIL - LinkedIn Message (asset_type_id: 40, channel_id: TBD_LI_MSG)
+   ├─ headline_word_count_min: 8
+   ├─ headline_word_count_max: 12
+   ├─ subheadline_word_count_min: 10
+   ├─ subheadline_word_count_max: 15
+   ├─ body_word_count_min: 80
+   ├─ body_word_count_max: 120
+   └─ additional_specs: "~60–90 chars for headline, ~75–120 chars for sub-headline, ~550–850 chars for body"
+
+4. SOLUTION BROCHURE (asset_type_id: 31, channel_id: NULL - not channel-specific)
+   ├─ file_format: "PDF"
+   ├─ paper_size: "A4 (210 × 297 mm)"
+   ├─ headline_word_count_min: 6
+   ├─ headline_word_count_max: 10
+   ├─ subheadline_word_count_min: 15
+   ├─ subheadline_word_count_max: 20
+   ├─ body_word_count_min: 120
+   ├─ body_word_count_max: 140
+   ├─ cta_word_count_min: 3
+   └─ cta_word_count_max: 5
+
+5. SOLUTION LANDING PAGE (asset_type_id: 29, channel_id: NULL)
+   ├─ headline_word_count_min: 10
+   ├─ headline_word_count_max: 12
+   ├─ subheadline_word_count_min: 20
+   ├─ subheadline_word_count_max: 25
+   ├─ body_word_count_min: 40
+   ├─ body_word_count_max: 60
+   ├─ cta_word_count_min: 3
+   ├─ cta_word_count_max: 5
+   └─ additional_specs: "~70 chars for headline, ~120 chars for sub-headline, per paragraph for body"
+
+6. SOLUTION VIDEO SCRIPT (asset_type_id: 26, channel_id: NULL)
+   ├─ file_format: "PDF/Word"
+   ├─ cta_word_count_max: 10
+   └─ additional_specs: "~150 words per minute"
+
+7. SOLUTION VIDEO PRODUCTION (asset_type_id: 44, channel_id: NULL)
+   └─ (No specifications listed in CSV)
+
+8. SOLUTION ARTICLE (asset_type_id: 30, channel_id: NULL)
+   ├─ file_format: "PDF/Word"
+   ├─ paper_size: "A4 (210 × 297 mm)"
+   ├─ headline_word_count_min: 8
+   ├─ headline_word_count_max: 12
+   ├─ subheadline_word_count_min: 15
+   ├─ subheadline_word_count_max: 20
+   ├─ body_word_count_min: 40
+   ├─ body_word_count_max: 60
+   └─ additional_specs: "4–6 pages, paragraphs 40–60 words"
+
+9. SOLUTION BANNER ADVERT - TikTok (asset_type_id: 25, channel_id: 4)
+   ├─ file_format: "Video"
+   ├─ duration_min: "30s"
+   ├─ duration_max: "50s"
+   ├─ body_word_count_min: 130
+   ├─ body_word_count_max: 150
+   └─ additional_specs: "1080x1920 px, 9:16 aspect ratio"
+
+10. SOLUTION BANNER ADVERT - YouTube (asset_type_id: 25, channel_id: 6)
+   ├─ file_format: "Video"
+   ├─ duration_min: "1 min"
+   ├─ duration_max: "3 mins"
+   ├─ body_word_count_min: 420
+   ├─ body_word_count_max: 510
+   └─ additional_specs: "1920x1080 px, 16:9 aspect ratio"
+
+11. SOLUTION BANNER ADVERT - Facebook (asset_type_id: 25, channel_id: 1)
+   ├─ headline_word_count_min: 5
+   ├─ headline_word_count_max: 7
+   ├─ subheadline_word_count_min: 10
+   ├─ subheadline_word_count_max: 15
+   └─ additional_specs: "1200x628 px, ~40 chars for headline, ~90 chars for sub-headline, Image text <20%"
+
+12. SOLUTION BANNER ADVERT - LinkedIn (asset_type_id: 25, channel_id: 3)
+   ├─ headline_word_count_min: 5
+   ├─ headline_word_count_max: 7
+   ├─ subheadline_word_count_min: 10
+   ├─ subheadline_word_count_max: 15
+   └─ additional_specs: "1080x1080 px, 1:1 aspect ratio, ~40 chars for headline, ~90 chars for sub-headline, Image text <20%"
+
+13. SOLUTION BANNER ADVERT - Google Ads (asset_type_id: 25, channel_id: 5)
+   ├─ headline_word_count_min: 5
+   ├─ headline_word_count_max: 7
+   ├─ subheadline_word_count_min: 10
+   ├─ subheadline_word_count_max: 15
+   └─ additional_specs: "300x250 px, ~40 chars for headline, ~90 chars for sub-headline, Image text <20%"
+
+14. SOLUTION UVP PITCH (asset_type_id: 27, channel_id: NULL)
+   ├─ headline_word_count_min: 6
+   ├─ headline_word_count_max: 10
+   ├─ subheadline_word_count_min: 10
+   ├─ subheadline_word_count_max: 15
+   └─ additional_specs: "1920x1080 px (HD), 16:9 aspect ratio, Bullet points: 5–7 words each, max 5 bullets"
+
+15. SOLUTION MINISITE (asset_type_id: 33, channel_id: NULL)
+   ├─ headline_word_count_min: 10
+   ├─ headline_word_count_max: 12
+   ├─ subheadline_word_count_min: 20
+   ├─ subheadline_word_count_max: 25
+   ├─ body_word_count_min: 40
+   ├─ body_word_count_max: 60
+   ├─ cta_word_count_min: 3
+   ├─ cta_word_count_max: 5
+   └─ additional_specs: "Responsive web (desktop 1440 px width, mobile 375 px), ~70 chars for headline, ~120 chars for sub-headline, per paragraph for body"
+
+16. SOLUTION PPT (asset_type_id: 34, channel_id: NULL)
+   ├─ headline_word_count_min: 6
+   ├─ headline_word_count_max: 10
+   ├─ subheadline_word_count_min: 10
+   ├─ subheadline_word_count_max: 15
+   └─ additional_specs: "16:9 widescreen (1920x1080 px), Bullet points: 5–7 words each, max 5 bullets"
+
+17. PRODUCT BROCHURE (asset_type_id: 32, channel_id: NULL)
+   ├─ file_format: "PDF"
+   ├─ paper_size: "A4 (210 × 297 mm)"
+   ├─ headline_word_count_min: 6
+   ├─ headline_word_count_max: 10
+   ├─ subheadline_word_count_min: 15
+   ├─ subheadline_word_count_max: 20
+   ├─ body_word_count_min: 120
+   ├─ body_word_count_max: 140
+   ├─ cta_word_count_min: 3
+   └─ cta_word_count_max: 5
+
+18. PODCAST (asset_type_id: 28, channel_id: NULL)
+   ├─ file_format: "MP3"
+   ├─ audio_quality: "44.1kHz"
+   ├─ headline_word_count_min: 10
+   ├─ headline_word_count_max: 12
+   ├─ subheadline_word_count_min: 20
+   ├─ subheadline_word_count_max: 25
+   ├─ body_word_count_min: 40
+   ├─ body_word_count_max: 60
+   └─ additional_specs: "~70 chars for headline, ~120 chars for sub-headline, per paragraph for body"
+
+================================================================================
+NOTES
+================================================================================
+
+1. Channel-specific assets have specific channel_id values
+2. Generic assets (not tied to a channel) will have NULL for channel_id
+   - This violates our UNIQUE constraint on (asset_type_id, channel_id)
+   - Need to decide: Create a "Generic" channel OR allow NULL in channel_id OR use a specific channel for each
+
+3. Dimension specifications are in additional_specs (not in separate columns)
+   - This was per the decision to remove std_width_px, std_height_px, etc.
+
+4. Run migration_add_missing_channels.sql FIRST before running the INSERT script
+
+================================================================================

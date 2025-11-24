@@ -79,6 +79,12 @@ BEGIN TRY
         -- Additional Constraints
         additional_specs NVARCHAR(MAX) NULL,
 
+        -- Tool Information
+        tool_url VARCHAR(500) NULL,
+        tool_button_text VARCHAR(100) NULL,
+        tool_url_2 VARCHAR(500) NULL,
+        tool_button_text_2 VARCHAR(100) NULL,
+
         -- Metadata
         status VARCHAR(20) NOT NULL DEFAULT 'active',
         created_at DATETIME2 NOT NULL DEFAULT SYSUTCDATETIME(),
@@ -156,6 +162,7 @@ BEGIN TRY
     PRINT '  - File specs: file_format, paper_size, audio_quality, duration_min, duration_max';
     PRINT '  - Word counts: headline, subheadline, body, cta (all with min/max)';
     PRINT '  - additional_specs (for complex notes)';
+    PRINT '  - Tool info: tool_url, tool_button_text, tool_url_2, tool_button_text_2';
     PRINT '  - Metadata: status, created_at, created_by, updated_at, updated_by';
     PRINT '';
 
