@@ -1,0 +1,1016 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Master Data Management - Admin</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --success: #10b981;
+            --success-hover: #059669;
+            --danger: #ef4444;
+            --danger-hover: #dc2626;
+            --warning: #f59e0b;
+            --bg-gray: #f9fafb;
+            --white: #ffffff;
+            --text-primary: #1f2937;
+            --text-secondary: #6b7280;
+            --border: #e5e7eb;
+            --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: var(--bg-gray);
+            color: var(--text-primary);
+            line-height: 1.5;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        header {
+            background: var(--white);
+            padding: 1.5rem 2rem;
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+        }
+
+        h1 {
+            font-size: 1.875rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+        }
+
+        /* Tabs */
+        .tabs {
+            background: var(--white);
+            padding: 0 2rem;
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+            border-radius: 0.5rem;
+            overflow-x: auto;
+        }
+
+        .tab-list {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .tab-button {
+            background: none;
+            border: none;
+            padding: 1rem 0;
+            font-size: 0.9375rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -2px;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        .tab-button:hover {
+            color: var(--primary);
+        }
+
+        .tab-button.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+
+        /* Main Content */
+        .content-card {
+            background: var(--white);
+            border-radius: 0.5rem;
+            box-shadow: var(--shadow);
+            padding: 1.5rem;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .search-box {
+            flex: 1;
+            max-width: 300px;
+            position: relative;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 0.5rem 2.5rem 0.5rem 1rem;
+            border: 1px solid var(--border);
+            border-radius: 0.375rem;
+            font-size: 0.875rem;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--primary);
+            ring: 2px solid rgba(37, 99, 235, 0.1);
+        }
+
+        .search-icon {
+            position: absolute;
+            right: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 0.375rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-hover);
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: var(--success-hover);
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: var(--danger-hover);
+        }
+
+        .btn-secondary {
+            background: var(--bg-gray);
+            color: var(--text-primary);
+        }
+
+        .btn-secondary:hover {
+            background: var(--border);
+        }
+
+        .btn-icon {
+            padding: 0.375rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Table */
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: var(--bg-gray);
+        }
+
+        th {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            cursor: pointer;
+            user-select: none;
+        }
+
+        th:hover {
+            background: var(--border);
+        }
+
+        td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.875rem;
+        }
+
+        tbody tr:hover {
+            background: var(--bg-gray);
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 0.25rem 0.625rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .status-active {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .status-inactive {
+            background: #f3f4f6;
+            color: #4b5563;
+        }
+
+        .actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: var(--text-secondary);
+        }
+
+        .empty-state-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background: var(--white);
+            border-radius: 0.5rem;
+            max-width: 500px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: var(--shadow-lg);
+            animation: slideIn 0.2s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(-20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .modal-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+        }
+
+        .modal-footer {
+            padding: 1.5rem;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.75rem;
+        }
+
+        /* Form */
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .form-label.required::after {
+            content: ' *';
+            color: var(--danger);
+        }
+
+        .form-input,
+        .form-select,
+        .form-textarea {
+            width: 100%;
+            padding: 0.5rem 0.75rem;
+            border: 1px solid var(--border);
+            border-radius: 0.375rem;
+            font-size: 0.875rem;
+            font-family: inherit;
+        }
+
+        .form-input:focus,
+        .form-select:focus,
+        .form-textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .form-error {
+            color: var(--danger);
+            font-size: 0.75rem;
+            margin-top: 0.25rem;
+        }
+
+        /* Toast */
+        .toast-container {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            z-index: 2000;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .toast {
+            background: var(--white);
+            padding: 1rem 1.5rem;
+            border-radius: 0.5rem;
+            box-shadow: var(--shadow-lg);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            min-width: 300px;
+            animation: slideInRight 0.3s ease-out;
+        }
+
+        @keyframes slideInRight {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .toast-success {
+            border-left: 4px solid var(--success);
+        }
+
+        .toast-error {
+            border-left: 4px solid var(--danger);
+        }
+
+        .toast-message {
+            flex: 1;
+            font-size: 0.875rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            header {
+                padding: 1rem;
+            }
+
+            h1 {
+                font-size: 1.5rem;
+            }
+
+            .tabs {
+                padding: 0 1rem;
+            }
+
+            .tab-list {
+                gap: 1rem;
+            }
+
+            .card-header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .search-box {
+                max-width: 100%;
+            }
+
+            table {
+                font-size: 0.8125rem;
+            }
+
+            td, th {
+                padding: 0.5rem;
+            }
+        }
+
+        /* Icons (using text symbols for simplicity) */
+        .icon-search::before { content: '🔍'; }
+        .icon-add::before { content: '+'; }
+        .icon-edit::before { content: '✏️'; }
+        .icon-delete::before { content: '🗑️'; }
+        .icon-check::before { content: '✓'; }
+        .icon-close::before { content: '✕'; }
+        .icon-info::before { content: 'ℹ️'; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Master Data Management</h1>
+        <p class="subtitle">Manage solutions, products, channels, and approvers</p>
+    </header>
+
+    <div class="container">
+        <!-- Tabs -->
+        <div class="tabs">
+            <ul class="tab-list">
+                <li><button class="tab-button active" data-tab="solutions">Solutions</button></li>
+                <li><button class="tab-button" data-tab="products">Products</button></li>
+                <li><button class="tab-button" data-tab="channels">Channels</button></li>
+                <li><button class="tab-button" data-tab="approvers">Approvers</button></li>
+            </ul>
+        </div>
+
+        <!-- Content Card -->
+        <div class="content-card">
+            <div class="card-header">
+                <h2 class="card-title" id="tableTitle">Solutions</h2>
+                <div class="search-box">
+                    <input type="text" id="searchInput" placeholder="Search...">
+                    <span class="search-icon icon-search"></span>
+                </div>
+                <button class="btn btn-primary" id="addButton">
+                    <span class="icon-add"></span>
+                    Add New
+                </button>
+            </div>
+
+            <div class="table-container">
+                <table id="dataTable">
+                    <thead id="tableHead"></thead>
+                    <tbody id="tableBody"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modalTitle">Add Solution</h3>
+            </div>
+            <div class="modal-body">
+                <form id="dataForm"></form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="cancelButton">Cancel</button>
+                <button type="button" class="btn btn-success" id="saveButton">
+                    <span class="icon-check"></span>
+                    Save
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script>
+        // ========================================
+        // DATA MANAGEMENT
+        // ========================================
+
+        const STORAGE_KEY = 'masterData';
+
+        // Initialize data structure
+        const initializeData = () => {
+            const stored = localStorage.getItem(STORAGE_KEY);
+            if (stored) {
+                return JSON.parse(stored);
+            }
+
+            // Sample data from actual database
+            const defaultData = {
+                solutions: [
+                    { id: 5, solution_name: 'Higher Education CLaaS', solution_code: 'HED', description: '', status: 'active', created_at: new Date().toISOString() },
+                    { id: 6, solution_name: 'Lifelong CET CLaaS', solution_code: 'LLL', description: '', status: 'active', created_at: new Date().toISOString() },
+                    { id: 7, solution_name: 'Enterprise CLaaS', solution_code: 'ENT', description: '', status: 'active', created_at: new Date().toISOString() },
+                    { id: 8, solution_name: 'University Alliance', solution_code: 'UA', description: '', status: 'active', created_at: new Date().toISOString() }
+                ],
+                products: [
+                    { id: 1, solution_id: 5, product_name: 'Work-Study Degree Digital Business', product_code: 'WSDDB', description: '', status: 'active', created_at: new Date().toISOString() },
+                    { id: 3, solution_id: 5, product_name: 'Work-Study Degree Software Engineering', product_code: 'WSDSE', description: '', status: 'active', created_at: new Date().toISOString() },
+                    { id: 5, solution_id: 5, product_name: 'Work-Integrated Master\'s Digital Business', product_code: 'WIMDB', description: '', status: 'active', created_at: new Date().toISOString() },
+                    { id: 7, solution_id: 5, product_name: 'Work-Integrated Master\'s Software Engineering', product_code: 'WIMSE', description: '', status: 'active', created_at: new Date().toISOString() },
+                    { id: 9, solution_id: 6, product_name: 'Lifelong Learning Digital Marketing', product_code: 'LLLDM', description: '', status: 'active', created_at: new Date().toISOString() },
+                    { id: 10, solution_id: 6, product_name: 'Lifelong Learning Cloud Computing', product_code: 'LLLCC', description: '', status: 'active', created_at: new Date().toISOString() },
+                    { id: 12, solution_id: 6, product_name: 'Lifelong Learning Data Science and AI', product_code: 'LLLDSAI', description: '', status: 'active', created_at: new Date().toISOString() },
+                    { id: 13, solution_id: 6, product_name: 'Lifelong Learning AI Application', product_code: 'LLLAIAPP', description: '', status: 'active', created_at: new Date().toISOString() },
+                    { id: 14, solution_id: 6, product_name: 'Lifelong Learning Digital Innovation Lead', product_code: 'LLLDIL', description: '', status: 'active', created_at: new Date().toISOString() },
+                    { id: 15, solution_id: 7, product_name: 'MSME', product_code: 'MSME', description: '', status: 'active', created_at: new Date().toISOString() },
+                    { id: 16, solution_id: 7, product_name: 'SME Digitalization CLaaS', product_code: 'SME', description: '', status: 'active', created_at: new Date().toISOString() },
+                    { id: 17, solution_id: 7, product_name: 'Large Corporate CLaaS', product_code: 'CORP', description: '', status: 'active', created_at: new Date().toISOString() },
+                    { id: 18, solution_id: 8, product_name: 'University Alliance', product_code: 'UA', description: '', status: 'active', created_at: new Date().toISOString() }
+                ],
+                channels: [
+                    { id: 1, channel_name: 'Facebook', channel_code: 'FB', description: '', status: 'active', created_at: new Date().toISOString() },
+                    { id: 2, channel_name: 'Instagram', channel_code: 'IG', description: '', status: 'active', created_at: new Date().toISOString() },
+                    { id: 3, channel_name: 'LinkedIn', channel_code: 'LI', description: '', status: 'active', created_at: new Date().toISOString() },
+                    { id: 4, channel_name: 'TikTok', channel_code: 'TT', description: '', status: 'active', created_at: new Date().toISOString() },
+                    { id: 5, channel_name: 'Google Ads', channel_code: 'GA', description: '', status: 'active', created_at: new Date().toISOString() },
+                    { id: 6, channel_name: 'YouTube', channel_code: 'YT', description: '', status: 'active', created_at: new Date().toISOString() },
+                    { id: 7, channel_name: 'Direct Sales', channel_code: 'DS', description: '', status: 'active', created_at: new Date().toISOString() },
+                    { id: 8, channel_name: 'Events', channel_code: 'EVT', description: '', status: 'active', created_at: new Date().toISOString() },
+                    { id: 9, channel_name: 'Proposal', channel_code: 'PRP', description: '', status: 'active', created_at: new Date().toISOString() },
+                    { id: 10, channel_name: 'Demos', channel_code: 'DEM', description: '', status: 'active', created_at: new Date().toISOString() },
+                    { id: 13, channel_name: 'Alliances', channel_code: 'AL', description: '', status: 'active', created_at: new Date().toISOString() },
+                    { id: 14, channel_name: 'WhatsApp', channel_code: 'WA', description: 'WhatsApp messaging channel', status: 'active', created_at: new Date().toISOString() },
+                    { id: 15, channel_name: 'LinkedIn Message', channel_code: 'LI_MSG', description: 'LinkedIn direct messaging', status: 'active', created_at: new Date().toISOString() },
+                    { id: 16, channel_name: 'HubSpot Email', channel_code: 'HS_EMAIL', description: 'Database email via HubSpot', status: 'active', created_at: new Date().toISOString() }
+                ],
+                approvers: [
+                    { id: 1, name: 'Dewi Sofiana', email: 'dewi.sofiana@company.com', role_abbreviation: 'CMP', approval_order: 1, approval_label: '1st approver', status: 'active', created_at: new Date().toISOString() },
+                    { id: 2, name: 'Natania Shareen', email: 'natania.shareen@company.com', role_abbreviation: 'CMM', approval_order: 2, approval_label: '2nd approver', status: 'active', created_at: new Date().toISOString() },
+                    { id: 3, name: 'Dannica', email: 'dannica@company.com', role_abbreviation: 'CL', approval_order: 3, approval_label: 'Final Approver', status: 'active', created_at: new Date().toISOString() }
+                ]
+            };
+
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(defaultData));
+            return defaultData;
+        };
+
+        let data = initializeData();
+        let currentTab = 'solutions';
+        let currentEditId = null;
+        let searchTerm = '';
+
+        // Save data to localStorage
+        const saveData = () => {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+        };
+
+        // Get next ID for a table
+        const getNextId = (table) => {
+            const items = data[table];
+            return items.length > 0 ? Math.max(...items.map(item => item.id)) + 1 : 1;
+        };
+
+        // ========================================
+        // TABLE CONFIGURATIONS
+        // ========================================
+
+        const tableConfigs = {
+            solutions: {
+                title: 'Solutions',
+                columns: [
+                    { key: 'solution_name', label: 'Solution Name', sortable: true },
+                    { key: 'solution_code', label: 'Code', sortable: true },
+                    { key: 'description', label: 'Description', sortable: false },
+                    { key: 'status', label: 'Status', sortable: true, type: 'badge' },
+                    { key: 'actions', label: 'Actions', sortable: false, type: 'actions' }
+                ],
+                formFields: [
+                    { name: 'solution_name', label: 'Solution Name', type: 'text', required: true },
+                    { name: 'solution_code', label: 'Solution Code', type: 'text', required: true },
+                    { name: 'description', label: 'Description', type: 'textarea', required: false },
+                    { name: 'status', label: 'Status', type: 'select', required: true, options: [
+                        { value: 'active', label: 'Active' },
+                        { value: 'inactive', label: 'Inactive' }
+                    ]}
+                ]
+            },
+            products: {
+                title: 'Products',
+                columns: [
+                    { key: 'product_name', label: 'Product Name', sortable: true },
+                    { key: 'product_code', label: 'Code', sortable: true },
+                    { key: 'solution_id', label: 'Solution', sortable: true, type: 'lookup', lookupTable: 'solutions', lookupKey: 'solution_name' },
+                    { key: 'description', label: 'Description', sortable: false },
+                    { key: 'status', label: 'Status', sortable: true, type: 'badge' },
+                    { key: 'actions', label: 'Actions', sortable: false, type: 'actions' }
+                ],
+                formFields: [
+                    { name: 'product_name', label: 'Product Name', type: 'text', required: true },
+                    { name: 'product_code', label: 'Product Code', type: 'text', required: true },
+                    { name: 'solution_id', label: 'Solution', type: 'select', required: true, dynamic: true, source: 'solutions', sourceKey: 'solution_name' },
+                    { name: 'description', label: 'Description', type: 'textarea', required: false },
+                    { name: 'status', label: 'Status', type: 'select', required: true, options: [
+                        { value: 'active', label: 'Active' },
+                        { value: 'inactive', label: 'Inactive' }
+                    ]}
+                ]
+            },
+            channels: {
+                title: 'Channels',
+                columns: [
+                    { key: 'channel_name', label: 'Channel Name', sortable: true },
+                    { key: 'channel_code', label: 'Code', sortable: true },
+                    { key: 'description', label: 'Description', sortable: false },
+                    { key: 'status', label: 'Status', sortable: true, type: 'badge' },
+                    { key: 'actions', label: 'Actions', sortable: false, type: 'actions' }
+                ],
+                formFields: [
+                    { name: 'channel_name', label: 'Channel Name', type: 'text', required: true },
+                    { name: 'channel_code', label: 'Channel Code', type: 'text', required: true },
+                    { name: 'description', label: 'Description', type: 'textarea', required: false },
+                    { name: 'status', label: 'Status', type: 'select', required: true, options: [
+                        { value: 'active', label: 'Active' },
+                        { value: 'inactive', label: 'Inactive' }
+                    ]}
+                ]
+            },
+            approvers: {
+                title: 'Approvers',
+                columns: [
+                    { key: 'name', label: 'Name', sortable: true },
+                    { key: 'email', label: 'Email', sortable: true },
+                    { key: 'role_abbreviation', label: 'Role', sortable: true },
+                    { key: 'approval_order', label: 'Order', sortable: true },
+                    { key: 'approval_label', label: 'Label', sortable: true },
+                    { key: 'display_name', label: 'Display Name', sortable: false, type: 'computed' },
+                    { key: 'status', label: 'Status', sortable: true, type: 'badge' },
+                    { key: 'actions', label: 'Actions', sortable: false, type: 'actions' }
+                ],
+                formFields: [
+                    { name: 'name', label: 'Full Name', type: 'text', required: true },
+                    { name: 'email', label: 'Email', type: 'email', required: true },
+                    { name: 'role_abbreviation', label: 'Role Abbreviation', type: 'text', required: true, placeholder: 'e.g., CMP, CMM, CL' },
+                    { name: 'approval_order', label: 'Approval Order', type: 'number', required: true },
+                    { name: 'approval_label', label: 'Approval Label', type: 'text', required: true, placeholder: 'e.g., 1st approver, Final Approver' },
+                    { name: 'status', label: 'Status', type: 'select', required: true, options: [
+                        { value: 'active', label: 'Active' },
+                        { value: 'inactive', label: 'Inactive' }
+                    ]}
+                ]
+            }
+        };
+
+        // ========================================
+        // UI RENDERING
+        // ========================================
+
+        const renderTable = () => {
+            const config = tableConfigs[currentTab];
+            const tableData = getFilteredData();
+
+            // Update title
+            document.getElementById('tableTitle').textContent = config.title;
+
+            // Render table header
+            const thead = document.getElementById('tableHead');
+            thead.innerHTML = `
+                <tr>
+                    ${config.columns.map(col => `
+                        <th ${col.sortable ? `onclick="sortTable('${col.key}')"` : ''} style="${col.sortable ? 'cursor: pointer;' : ''}">
+                            ${col.label}
+                        </th>
+                    `).join('')}
+                </tr>
+            `;
+
+            // Render table body
+            const tbody = document.getElementById('tableBody');
+            if (tableData.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="${config.columns.length}">
+                            <div class="empty-state">
+                                <div class="empty-state-icon">📭</div>
+                                <p>No records found</p>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            } else {
+                tbody.innerHTML = tableData.map(row => `
+                    <tr>
+                        ${config.columns.map(col => {
+                            if (col.type === 'badge') {
+                                return `<td><span class="status-badge status-${row[col.key]}">${row[col.key]}</span></td>`;
+                            } else if (col.type === 'actions') {
+                                return `
+                                    <td>
+                                        <div class="actions">
+                                            <button class="btn btn-icon btn-primary" onclick="editRow(${row.id})" title="Edit">
+                                                <span class="icon-edit"></span>
+                                            </button>
+                                            <button class="btn btn-icon btn-danger" onclick="deleteRow(${row.id})" title="Delete">
+                                                <span class="icon-delete"></span>
+                                            </button>
+                                        </div>
+                                    </td>
+                                `;
+                            } else if (col.type === 'lookup') {
+                                const lookupValue = data[col.lookupTable].find(item => item.id === row[col.key]);
+                                return `<td>${lookupValue ? lookupValue[col.lookupKey] : 'N/A'}</td>`;
+                            } else if (col.type === 'computed') {
+                                // For approvers, compute display_name
+                                if (currentTab === 'approvers') {
+                                    const displayName = `${row.name} - ${row.role_abbreviation} - ${row.approval_label}`;
+                                    return `<td>${displayName}</td>`;
+                                }
+                                return `<td></td>`;
+                            } else {
+                                return `<td>${row[col.key] || ''}</td>`;
+                            }
+                        }).join('')}
+                    </tr>
+                `).join('');
+            }
+        };
+
+        const renderForm = (editData = null) => {
+            const config = tableConfigs[currentTab];
+            const form = document.getElementById('dataForm');
+
+            form.innerHTML = config.formFields.map(field => {
+                let inputHtml = '';
+                const value = editData ? editData[field.name] : '';
+
+                if (field.type === 'textarea') {
+                    inputHtml = `<textarea class="form-textarea" name="${field.name}" ${field.required ? 'required' : ''}>${value}</textarea>`;
+                } else if (field.type === 'select') {
+                    let options = field.options || [];
+
+                    // Dynamic select (e.g., for products -> solutions)
+                    if (field.dynamic && field.source) {
+                        options = data[field.source].map(item => ({
+                            value: item.id,
+                            label: item[field.sourceKey]
+                        }));
+                    }
+
+                    inputHtml = `
+                        <select class="form-select" name="${field.name}" ${field.required ? 'required' : ''}>
+                            <option value="">Select...</option>
+                            ${options.map(opt => `
+                                <option value="${opt.value}" ${value == opt.value ? 'selected' : ''}>${opt.label}</option>
+                            `).join('')}
+                        </select>
+                    `;
+                } else {
+                    inputHtml = `<input type="${field.type}" class="form-input" name="${field.name}" value="${value}" ${field.required ? 'required' : ''} ${field.placeholder ? `placeholder="${field.placeholder}"` : ''}>`;
+                }
+
+                return `
+                    <div class="form-group">
+                        <label class="form-label ${field.required ? 'required' : ''}">${field.label}</label>
+                        ${inputHtml}
+                    </div>
+                `;
+            }).join('');
+        };
+
+        // ========================================
+        // CRUD OPERATIONS
+        // ========================================
+
+        const getFilteredData = () => {
+            let tableData = [...data[currentTab]];
+
+            if (searchTerm) {
+                const config = tableConfigs[currentTab];
+                tableData = tableData.filter(row => {
+                    return config.columns.some(col => {
+                        if (col.type === 'actions') return false;
+                        const value = String(row[col.key] || '').toLowerCase();
+                        return value.includes(searchTerm.toLowerCase());
+                    });
+                });
+            }
+
+            return tableData;
+        };
+
+        const openModal = (editId = null) => {
+            currentEditId = editId;
+            const config = tableConfigs[currentTab];
+            const modalTitle = document.getElementById('modalTitle');
+
+            if (editId !== null) {
+                modalTitle.textContent = `Edit ${config.title.slice(0, -1)}`;
+                const editData = data[currentTab].find(item => item.id === editId);
+                renderForm(editData);
+            } else {
+                modalTitle.textContent = `Add ${config.title.slice(0, -1)}`;
+                renderForm();
+            }
+
+            document.getElementById('modalOverlay').classList.add('active');
+        };
+
+        const closeModal = () => {
+            document.getElementById('modalOverlay').classList.remove('active');
+            currentEditId = null;
+        };
+
+        const saveRecord = () => {
+            const form = document.getElementById('dataForm');
+            const formData = new FormData(form);
+            const record = {};
+
+            // Validate
+            let isValid = true;
+            for (const [key, value] of formData.entries()) {
+                const field = tableConfigs[currentTab].formFields.find(f => f.name === key);
+                if (field && field.required && !value) {
+                    isValid = false;
+                    showToast('Please fill all required fields', 'error');
+                    return;
+                }
+                record[key] = value;
+            }
+
+            if (currentEditId !== null) {
+                // Update existing
+                const index = data[currentTab].findIndex(item => item.id === currentEditId);
+                data[currentTab][index] = { ...data[currentTab][index], ...record };
+                showToast('Record updated successfully', 'success');
+            } else {
+                // Create new
+                record.id = getNextId(currentTab);
+                record.created_at = new Date().toISOString();
+                data[currentTab].push(record);
+                showToast('Record created successfully', 'success');
+            }
+
+            saveData();
+            closeModal();
+            renderTable();
+        };
+
+        const editRow = (id) => {
+            openModal(id);
+        };
+
+        const deleteRow = (id) => {
+            if (confirm('Are you sure you want to delete this record?')) {
+                const index = data[currentTab].findIndex(item => item.id === id);
+                data[currentTab].splice(index, 1);
+                saveData();
+                renderTable();
+                showToast('Record deleted successfully', 'success');
+            }
+        };
+
+        const sortTable = (key) => {
+            data[currentTab].sort((a, b) => {
+                if (a[key] < b[key]) return -1;
+                if (a[key] > b[key]) return 1;
+                return 0;
+            });
+            renderTable();
+        };
+
+        // ========================================
+        // UTILITY FUNCTIONS
+        // ========================================
+
+        const showToast = (message, type = 'success') => {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast toast-${type}`;
+            toast.innerHTML = `
+                <span class="icon-${type === 'success' ? 'check' : 'info'}"></span>
+                <div class="toast-message">${message}</div>
+            `;
+
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.remove();
+            }, 3000);
+        };
+
+        const switchTab = (tab) => {
+            currentTab = tab;
+            searchTerm = '';
+            document.getElementById('searchInput').value = '';
+
+            // Update active tab
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.dataset.tab === tab) {
+                    btn.classList.add('active');
+                }
+            });
+
+            renderTable();
+        };
+
+        // ========================================
+        // EVENT LISTENERS
+        // ========================================
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Tab switching
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                btn.addEventListener('click', () => switchTab(btn.dataset.tab));
+            });
+
+            // Add button
+            document.getElementById('addButton').addEventListener('click', () => openModal());
+
+            // Modal buttons
+            document.getElementById('cancelButton').addEventListener('click', closeModal);
+            document.getElementById('saveButton').addEventListener('click', saveRecord);
+
+            // Close modal on overlay click
+            document.getElementById('modalOverlay').addEventListener('click', (e) => {
+                if (e.target.id === 'modalOverlay') {
+                    closeModal();
+                }
+            });
+
+            // Search
+            document.getElementById('searchInput').addEventListener('input', (e) => {
+                searchTerm = e.target.value;
+                renderTable();
+            });
+
+            // Initial render
+            renderTable();
+        });
+
+        // Make functions globally available
+        window.editRow = editRow;
+        window.deleteRow = deleteRow;
+        window.sortTable = sortTable;
+    </script>
+</body>
+</html>
